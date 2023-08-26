@@ -1,4 +1,3 @@
-from typing import Any
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from .serializers import TaskSerializer, ProfileSerializer, UserSerializer
@@ -20,8 +19,8 @@ from django.contrib.auth.views import LoginView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
-from .forms import PositionForm
-from django.db import models, transaction
+from .forms import PositionForm, UserCreationForm
+from django.db import  transaction
 
 
 class CustomLoginView(LoginView):  
@@ -51,6 +50,7 @@ class RegisterPage(FormView):
 
 class TaskLIst(LoginRequiredMixin,ListView):
     #list view looks for object_list
+    login_url='login/'
     model= Task
     context_object_name= "tasks" #by default this is "object_list"
 
@@ -133,7 +133,7 @@ class RegistrationView(generics.CreateAPIView):
     serializer_class = UserSerializer
     permission_classes = (permissions.AllowAny,)
 
-class LoginView(APIView):
+class ApiLoginView(APIView):
     permission_classes = (permissions.AllowAny,)
 
     @method_decorator(csrf_exempt)
@@ -149,7 +149,7 @@ class LoginView(APIView):
         else:
             return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
-class LogoutView(APIView):
+class ApiLogoutView(APIView):
     def post(self, request):
         if request.user.is_authenticated:
             request.auth.delete()
