@@ -4,7 +4,7 @@ from django.dispatch import receiver
 from django.core.mail import send_mail
 from django.contrib.auth.models import User
 from django.utils import timezone
-from ..core import settings
+from django.conf import settings
 
 class Profile(models.Model):
     account= models.ForeignKey(User, on_delete= models.CASCADE)
@@ -14,7 +14,7 @@ class Profile(models.Model):
         return self.account.username
 
 class Task(models.Model):
-    created_by= models.ForeignKey(User, on_delete= models.CASCADE)
+    created_by= models.ForeignKey(User, on_delete= models.CASCADE, null= True)
     title= models.CharField(max_length= 255)
     description= models.TextField(null= True, blank= True)
     complete= models.BooleanField(default= False)
@@ -41,7 +41,7 @@ def task_created(sender, instance, created, **kwargs):
         # Send an email when a new task is created
         subject = 'New Task Created'
         message = f'A new task "{instance.title}" has been created. at {instance.start_time}'
-        recipient_list = [instance.created_by.email]  # Replace with appropriate email field
+        recipient_list = [instance.created_by.email]  
         send_mail(subject, message, settings.EMAIL_HOST_USER, recipient_list)
 
 @receiver(post_save, sender=Task)        
@@ -62,7 +62,7 @@ def task_completed(sender, instance, **kwargs):
 def task_deleted(sender, instance, **kwargs):
     subject = 'Task Deleted'
     message = f'The task "{instance.title}" has been deleted.'
-    recipient_list = [instance.created_by.email]  # Replace with appropriate email field
+    recipient_list = [instance.created_by.email] 
     send_mail(subject, message, settings.EMAIL_HOST_USER, recipient_list)
 
 # Create your models here.
