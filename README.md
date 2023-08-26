@@ -57,5 +57,13 @@ Fork the repository.
 
 ##LICENSE
 This project is licensed under the MIT License.
+
+##SUBNOTE
+##API ENDPOINT:
+POST /api/register/: User registration.
+POST /api/login/: User login.
+POST /api/logout/: User logout.
+GET /api/tasks/: List tasks and create a new task.
+GET /api/tasks/<task_id>/: Retrieve, update, or delete a task.
    
     
