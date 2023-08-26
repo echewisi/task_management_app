@@ -42,24 +42,24 @@ Task Management App is a web application built using Django that allows users to
     python manage.py runserver
 
 
-##USAGE
+## USAGE
 Access the application by navigating to http://localhost:8000 in your web browser.
 -Register or log in using your credentials.
 -Create, update, delete, and view your tasks.
 -Receive email notifications for reminders and deletions.
 
-##CONTRIBUTING
+## CONTRIBUTING
 Fork the repository.
 -Create a new branch: git checkout -b feature/your-feature-name.
 -Make your changes and commit them: git commit -m 'Add some feature'.
 -Push to the branch: git push origin feature/your-feature-name.
 -Open a pull request.
 
-##LICENSE
+## LICENSE
 This project is licensed under the MIT License.
 
-##SUBNOTE
-##API ENDPOINT:
+## SUBNOTE
+## API ENDPOINT:
 POST /api/register/: User registration.
 POST /api/login/: User login.
 POST /api/logout/: User logout.
