@@ -19,11 +19,12 @@ from django.urls import path, include
 from rest_framework import routers
 from main import views
 
-router= routers.DefaultRouter()
-router.register(r'task', views.Viewtasks)
+#enable for API to frontend
+#router= routers.DefaultRouter()
+#router.register(r'task', views.Viewtasks)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # path('', include("main.urls"))
+    path('', include("main.urls"))
     
 ]
