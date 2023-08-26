@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import RegistrationView, ApiLoginView, ApiLogoutView, TaskListCreateView, TaskRetrieveUpdateDeleteView
-from .views import TaskLIst, TaskDetail, TaskCreate, TaskUpdate, TaskDelete, CustomLoginView, RegisterPage
+from .views import TaskLIst, TaskDetail, TaskCreate, TaskUpdate, TaskDelete, CustomLoginView, RegisterPage, TaskReorder
 from django.contrib.auth.views import LogoutView
 urlpatterns = [
     path('', TaskLIst.as_view(), name="tasks"),
@@ -11,6 +11,7 @@ urlpatterns = [
     path("create-task/", TaskCreate.as_view(), name="task-create"),
     path("update/<int:pk>/", TaskUpdate.as_view(), name= "task-update"),
     path('delete/<int:pk>/', TaskDelete.as_view(), name="task-delete"),
+    path('task-redorder', TaskReorder.as_view(), name='task-reorder'),
     #API URLS HERE:
     path('api/register/', RegistrationView.as_view(), name='api-register'),
     path('api/login/', ApiLoginView.as_view(), name='api-login'),

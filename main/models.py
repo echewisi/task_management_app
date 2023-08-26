@@ -41,7 +41,7 @@ def task_created(sender, instance, created, **kwargs):
         # Send an email when a new task is created
         subject = 'New Task Created'
         message = f'A new task "{instance.title}" has been created. at {instance.start_time}'
-        recipient_list = [instance.created_by.email]  
+        recipient_list = [instance.user.email]  
         send_mail(subject, message, settings.EMAIL_HOST_USER, recipient_list)
 
 @receiver(post_save, sender=Task)        
