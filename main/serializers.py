@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 from rest_framework.authtoken.models import Token
-from .models import Profile
+from .models import Profile, Task
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -18,3 +18,8 @@ class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         fields = '__all__'
+    
+class TaskSerializer(serializers.ModelSerializerdel):
+    class Meta:
+        model= Task
+        fields= ('title', 'description', 'complete', 'reminder')

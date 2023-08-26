@@ -4,3 +4,4 @@ __init__.py
 .env
 db.sqlite3
 env
+.vscode
