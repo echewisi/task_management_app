@@ -69,7 +69,7 @@ class TaskList(LoginRequiredMixin, ListView):
 class TaskDetail(LoginRequiredMixin, DetailView):
     #detailview looks for object
     model= Task
-    context_object_name: str=  'task' #by default this is object
+    context_object_name: str= 'task' #by default this is object
     template_name: str= "base/task.html" #by default list view finds a html template with named after the class it's assigned to. this function "template_name" is to change such
 
 class TaskCreate(LoginRequiredMixin, CreateView): 

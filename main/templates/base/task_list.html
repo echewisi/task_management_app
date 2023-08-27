@@ -37,12 +37,43 @@
         <div class="task-title">
             {% if task.complete %}
             <div class="task-complete-icon"></div>
-            <i><s><a href="{% url 'task-update' task.id %}">{{task}}</a></s></i> {% else %}
+            <table>
+                <tr>
+                    <th>Finished</th>
+                    <th>Title</th>
+                    <th>Start time</th>
+                    <th>End time</th>
+                </tr>
+
+                <tr>
+                    <td>{{task.complete}}</td>
+                    <td><i><s>{{task.title}}</s></i></td>
+                    <td><i><s>{{task.start_time}}</s></i></td>
+                    <td>{{task.finish_time}}</td>
+                </tr>
+            </table>
+            {% else %}
             <div class="task-incomplete-icon"></div>
-            <a href="{% url 'task-update' task.id %}">{{task}}</a> {% endif %}
+            <table>
+                <tr>
+                    <th>Finished</th>
+                    <th>Title</th>
+                    <th>Start time</th>
+                    <th>Reminder</th>
+                </tr>
+                <tr>
+                    <td> {{task.complete}}</a> </td>
+                    <td>{{task.title}}</td>
+                    <td>{{task.start_time}}</td>
+                    <td>{{task.reminder}}</td>
+                </tr>
+            </table>
+            {% endif %}
         </div>
         <div class="task-controls">
             <a class="delete-link" href="{% url 'task-delete' task.id %}">&#215;</a>
+            <a href="{% url 'task' task.id %}"> details </a>
+            <a href="{% url 'task-update' task.id %}"> update </a>
             <span class="handle">&nbsp;&#10247;</span>
         </div>
     </div>

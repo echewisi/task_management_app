@@ -2,7 +2,7 @@
 
 
 
-Task Management App is a web application built using Django that allows users to manage their tasks. Users can create, update, delete, and view tasks. The app also sends email notifications for task reminders and deletions.
+Task Management App is a web application built using Django that allows users to manage their tasks. Users can create, update, delete, and view tasks. The app also sends email notifications for task reminders,creation and deletions.
 
 ## Table of Contents
 
@@ -41,12 +41,15 @@ Task Management App is a web application built using Django that allows users to
 6. run server:
     python manage.py runserver
 
+## note: 
+if email doesnt seem to work:
+replace `EMAIL_HOST_USER` with your own email and `EMAIL_HOST_PASSWORD` with the passwords generated in your google account for third party apps
 
 ## USAGE
 Access the application by navigating to http://localhost:8000 in your web browser.
 -Register or log in using your credentials.
 -Create, update, delete, and view your tasks.
--Receive email notifications for reminders and deletions.
+-Receive email notifications for reminders, creations and deletions.
 
 ## CONTRIBUTING
 Fork the repository.
