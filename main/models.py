@@ -67,12 +67,11 @@ def task_deleted(sender, instance, **kwargs):
 
 @receiver(post_save, sender=Task)
 def send_reminder_email(sender, instance, **kwargs):
-    if instance.reminder and instance.reminder <= datetime.datetime.now():
+    if instance.reminder and instance.reminder <= timezone.now():
         subject = 'Task Reminder'
         message = f'Reminder for the task "{instance.title}"'
         recipient_list = [instance.created_by.email]
         send_mail(subject, message, settings.EMAIL_HOST_USER, recipient_list)
-
 
 
 
