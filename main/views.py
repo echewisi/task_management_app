@@ -48,24 +48,24 @@ class RegisterPage(FormView):
             return redirect('tasks')
         return super(RegisterPage, self).get(*args, **kwargs)
 
-class TaskLIst(LoginRequiredMixin,ListView):
-    #list view looks for object_list
-    login_url='login/'
-    template_name='base/task_list.html'
-    model= Task
-    context_object_name= "tasks" #by default this is "object_list"
+class TaskList(LoginRequiredMixin, ListView):
+    login_url = 'login/'
+    template_name = 'base/task_list.html'
+    model = Task
+    context_object_name = "tasks"  # by default this is "object_list"
+
+    def get_queryset(self):
+        # Filter tasks based on the logged-in user
+        return Task.objects.filter(created_by=self.request.user)
 
     def get_context_data(self, **kwargs):
-        context= super().get_context_data(**kwargs)
-        context['tasks']= context['tasks'].filter(created_by=self.request.user)
-        context['count']= context['tasks'].filter(complete= False).count()
-        search_input= self.request.GET.get('search-area') or ''
+        context = super().get_context_data(**kwargs)
+        context['count'] = context['tasks'].filter(complete=False).count()
+        search_input = self.request.GET.get('search-area') or ''
         if search_input:
-            context['tasks']= context['tasks'].filter(title__icontains=search_input) #you can add a startswith to find items that begin with the particular letter passed in
-        
-        context['search-input']= search_input
+            context['tasks'] = context['tasks'].filter(title__icontains=search_input)
+        context['search_input'] = search_input
         return context
-    
 class TaskDetail(LoginRequiredMixin, DetailView):
     #detailview looks for object
     model= Task
@@ -73,27 +73,29 @@ class TaskDetail(LoginRequiredMixin, DetailView):
     template_name: str= "base/task.html" #by default list view finds a html template with named after the class it's assigned to. this function "template_name" is to change such
 
 class TaskCreate(LoginRequiredMixin, CreateView): 
-    model= Task
-    template_name: str='base/task_form.html'
-    fields= ['title', 'description', 'complete', 'reminder']
-    success_url= reverse_lazy("tasks")
+    model = Task
+    template_name = 'base/task_form.html'
+    fields = ['title', 'description', 'complete', 'reminder']
+    success_url = reverse_lazy("tasks")
 
     def form_valid(self, form):
-        form.instance.user= self.request.user
-        return super(TaskCreate, self).form_valid(form)
+        form.instance.created_by = self.request.user  # Set the creator to the logged-in user
+        return super().form_valid(form)
 
 class TaskUpdate(LoginRequiredMixin, UpdateView):
     model= Task
+    template_name= "base/task_form.html"
     fields= ['title', 'description', 'complete', 'reminder']
     success_url= reverse_lazy("tasks")
 
 class TaskDelete(LoginRequiredMixin, DeleteView):
     model=Task
+    template_name="base/task_confirm_delete.html"
     context_object_name: str= "task"
     success_url= reverse_lazy("tasks")
     def get_queryset(self):
         owner= self.request.user
-        return self.model.objects.filter(user=owner)
+        return self.model.objects.filter(created_by=owner)
 
 class TaskReorder(View):
     def post(self, request):
