@@ -5,9 +5,6 @@ from django.core.mail import send_mail
 from django.contrib.auth.models import User
 from django.utils import timezone
 from django.conf import settings
-import datetime
-from .tasks import send_reminder_email 
-from celery import current_app
 
 class Profile(models.Model):
     account = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank= True)
@@ -70,11 +67,12 @@ def task_deleted(sender, instance, **kwargs):
     send_mail(subject, message, settings.EMAIL_HOST_USER, recipient_list)
 
 @receiver(post_save, sender=Task)
-def schedule_task_reminder(sender, instance, created, **kwargs):
-    if created and instance.reminder:
-        eta = instance.reminder  # Schedule the task at the reminder time
-        send_reminder_email.apply_async(args=[instance.id], eta=eta, app=current_app)
-
+def send_reminder_email(sender, instance, **kwargs):
+    if instance.reminder and instance.reminder == timezone.now():
+        subject = 'Task Reminder'
+        message = f'Reminder for the task "{instance.title}"'
+        recipient_list = [instance.created_by.email]
+        send_mail(subject, message, settings.EMAIL_HOST_USER, recipient_list)
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
