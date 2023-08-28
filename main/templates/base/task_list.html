@@ -106,10 +106,32 @@
         }
         console.log(pos.join(","))
         positionInput.value = pos.join(',');
-        reorderForm.submit();
+
+        // Get the CSRF token and include it in the POST request
+        var csrfToken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+
+        // Send the POST request with the CSRF token
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", reorderForm.action, true);
+        xhr.setRequestHeader("X-CSRFToken", csrfToken);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    // Handle success if needed
+                } else {
+                    // Handle error if needed
+                }
+            }
+        };
+        xhr.send("position=" + pos.join(','));
+
+        // Prevent the default form submission
+        event.preventDefault();
     }
 
-    document.ondrop = reordering
+    document.ondrop = reordering;
 </script>
+
 
 {% endblock content %}

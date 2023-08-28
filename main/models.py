@@ -8,37 +8,12 @@ from django.conf import settings
 import datetime
 
 class Profile(models.Model):
-    account = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
-    tasks = models.ManyToManyField("Task", related_name="user_profiles", through="TaskOrder")
-
-    def set_task_order(self, new_order):
-        task_dict = {str(task.id): task for task in self.tasks.all()}
-
-        new_task_order = []
-        for task_id in new_order:
-            if task_id in task_dict:
-                new_task_order.append(task_dict[task_id])
-
-        for idx, task in enumerate(new_task_order, start=1):
-            taskorder, created = TaskOrder.objects.get_or_create(profile=self, task=task)
-            taskorder.order = idx
-            taskorder.save()
-
-    def get_ordered_tasks(self):
-        return self.tasks.order_by("taskorder__order")
+    account = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank= True)
+    tasks = models.ForeignKey("Task", on_delete=models.CASCADE, related_name="user_tasks", null=True, blank=True)
 
     def __str__(self):
         return self.account.username
-
-
-class TaskOrder(models.Model):
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    task = models.ForeignKey("Task", on_delete=models.CASCADE)
-    order = models.PositiveIntegerField(default=0)
-
-    class Meta:
-        unique_together = ("profile", "task")
-        ordering = ("order",)
+    
 
 
 class Task(models.Model):
@@ -100,6 +75,12 @@ def send_reminder_email(sender, instance, **kwargs):
         recipient_list = [instance.created_by.email]
         send_mail(subject, message, settings.EMAIL_HOST_USER, recipient_list)
 
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(account=instance)
 
-
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.profile.save()
 
