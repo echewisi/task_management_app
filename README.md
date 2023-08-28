@@ -44,6 +44,10 @@ Task Management App is a web application built using Django that allows users to
 7. if you want to take a look at the django administartion table
     run the command: py manage.py createsuperuser.
     fill in credentials and headover to http://localhost:8000/admin in your webbrowser
+  
+8. open another terminal and run:
+    celery -A core worker --loglevel=info
+    to initiate the celery worker and start sending reminder emails being set.
 
 ## note: 
 if email doesnt seem to work:
