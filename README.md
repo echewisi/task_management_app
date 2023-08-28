@@ -41,6 +41,10 @@ Task Management App is a web application built using Django that allows users to
 6. run server:
     python manage.py runserver
 
+7. if you want to take a look at the django administartion table
+    run the command: py manage.py createsuperuser.
+    fill in credentials and headover to http://localhost:8000/admin in your webbrowser
+
 ## note: 
 if email doesnt seem to work:
 replace `EMAIL_HOST_USER` with your own email and `EMAIL_HOST_PASSWORD` with the passwords generated in your google account for third party apps
