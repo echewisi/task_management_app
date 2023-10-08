@@ -117,6 +117,7 @@ class ProfileView(viewsets.ModelViewSet):
     serializer_class= ProfileSerializer
     queryset= Profile.objects.all()
     permission_classes= (permissions.IsAuthenticated,)
+    
 class TaskListCreateView(generics.ListCreateAPIView):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
